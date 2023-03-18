@@ -1,6 +1,6 @@
-import dir
-import image
-import scrapping
+import utils.dir as dir
+import utils.image as image
+import utils.scrapping as scrapping
 
 def downloadFromMangaA(url: str, alt: str, folder: str):
     fileFormat = '{:03d}'

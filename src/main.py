@@ -1,5 +1,5 @@
 
-import model
+import utils.model as model
 import json
 # import os
 from typing import List
