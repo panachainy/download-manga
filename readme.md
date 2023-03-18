@@ -1,3 +1,7 @@
 # download-manga
 
 ## development
+
+1. create file `config.json` and add data (example is `ex-config.json`)
+2. make i
+3. make r
