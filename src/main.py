@@ -1,35 +1,15 @@
-import dir
-import image
-import scrapping
 
-import os
-from dotenv import load_dotenv
+import model
+import json
+# import os
+from typing import List
+import services.manga_a as manga_a
 
-load_dotenv()
+with open("config.json") as f:
+    data = json.load(f)
 
-url = os.getenv('URL')
-alt = os.getenv('ALT')
-folder = os.getenv('FOLDER')
+s = model.ImageData.formJson(data)
 
-if not url:
-    print('URL environment variable is not set')
-    exit(1)
-elif not alt:
-    print('ALT environment variable is not set')
-    exit(1)
-elif not folder:
-    print('FOLDER environment variable is not set')
-    exit(1)
-
-fileFormat = '{:03d}'
-
-listLink = scrapping.get_image_link_from(url, alt)
-folderPath = 'images/' + folder + '/'
-dir.create_folder(folderPath)
-
-page = 1
-for link in listLink:
-    full_path = image.get_full_path(folderPath, fileFormat.format(page))
-    print('full_path', full_path)
-    image.download_image_v2(link, full_path)
-    page = page + 1
+for obj in s:
+    print(obj.url, obj.alt, obj.folder)
+    manga_a.downloadFromMangaA(obj.url, obj.alt, obj.folder)
