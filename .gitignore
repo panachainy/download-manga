@@ -1,0 +1,18 @@
+# Ignore pycache files
+__pycache__/
+*.pyc
+
+# Ignore virtual environment files
+env/
+
+# Ignore .env file
+.env
+
+# mac
+.DS_Store
+
+build/*
+dist/*
+default_output.mp4
+
+.venv/
