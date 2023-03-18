@@ -21,10 +21,15 @@ elif not folder:
     print('FOLDER environment variable is not set')
     exit(1)
 
+fileFormat = '{:03d}'
 
 listLink = scrapping.get_image_link_from(url, alt)
+folderPath = 'images/' + folder + '/'
+dir.create_folder(folderPath)
 
-dir.create_folder('images/' + folder)
-
-full_path = image.get_full_path('images/', 'file_name')
-image.download_image_v2(listLink[0], full_path)
+page = 1
+for link in listLink:
+    full_path = image.get_full_path(folderPath, fileFormat.format(page))
+    print('full_path', full_path)
+    image.download_image_v2(link, full_path)
+    page = page + 1
