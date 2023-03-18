@@ -12,6 +12,4 @@ class ImageData(BaseModel):
         ImageDataList = List[ImageData]
 
         data_list = parse_obj_as(ImageDataList, data)
-        # for obj in data_list:
-        #     print(obj.url, obj.alt, obj.folder)
         return data_list
