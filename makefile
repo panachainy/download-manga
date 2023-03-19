@@ -9,3 +9,6 @@ install:
 r: run
 run:
 	python src/main.py
+
+e:
+	python src/main.py t

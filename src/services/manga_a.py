@@ -2,11 +2,10 @@ import utils.dir as dir
 import utils.image as image
 import utils.scrapping as scrapping
 
-def downloadFromMangaA(url: str, alt: str, folder: str):
+def downloadFromMangaA(url: str, alt: str, folderPath: str):
     fileFormat = '{:03d}'
 
     listLink = scrapping.get_image_link_from(url, alt)
-    folderPath = 'images/' + folder + '/'
     dir.create_folder(folderPath)
 
     page = 1
