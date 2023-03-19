@@ -2,7 +2,9 @@ autopep8==2.0.2
 beautifulsoup4==4.11.2
 bs4==0.0.1
 certifi==2022.12.7
+cffi==1.15.1
 charset-normalizer==2.1.1
+cryptography==39.0.2
 ffmpeg-python==0.2.0
 fire==0.5.0
 fpdf==1.7.2
@@ -13,7 +15,9 @@ numpy==1.24.2
 Pillow==9.4.0
 pip-autoremove==0.10.0
 pycodestyle==2.10.0
+pycparser==2.21
 pydantic==1.10.6
+pyOpenSSL==23.0.0
 pypdf==3.6.0
 python-dotenv==0.21.0
 requests==2.28.1
