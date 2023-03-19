@@ -6,6 +6,7 @@ from typing import List
 import services.manga_a as manga_a
 import os
 from PIL import Image
+import utils.dir as dir
 
 
 class downloadManga:
@@ -38,11 +39,12 @@ class downloadManga:
 
                     image_list.append(Image.open(filePath).convert('RGB'))
 
-                pdfPath = folderPath + chapterLink.chapter + ".pdf"
+                dir.create_folder(folderPath + "/newPDF/")
+                pdfPath = folderPath + "/newPDF/" + chapterLink.chapter + ".pdf"
 
                 firstImage = image_list[0]
                 del image_list[0]
 
                 firstImage.save(pdfPath, save_all=True,
-                                   append_images=image_list)
+                                append_images=image_list)
                 print('Saved:', pdfPath)
