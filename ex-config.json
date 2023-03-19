@@ -1,7 +1,12 @@
 [
   {
-    "url": "1",
-    "alt": "2",
-    "folder": "3"
+    "url": "https://xxx.xx/xxxxx/name-of-manga1/",
+    "alt": "name-of-manga1",
+    "folder": ""
+  },
+  {
+    "url": "https://xxx.xx/xxxxx/name-of-manga2/",
+    "alt": "name-of-manga2",
+    "folder": ""
   }
 ]
