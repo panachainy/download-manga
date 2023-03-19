@@ -25,7 +25,11 @@ mergePDF:
 
 d: dev
 dev:
-	nodemon --exec python src/main.py mergePDF
+	# nodemon --exec python src/main.py mergePDF
+	nodemon --exec python src/main.py makePDFs
+
+m:
+	python src/main.py makePDFs
 
 # clean pdfs
 clean:
