@@ -8,6 +8,7 @@ import os
 from PIL import Image
 import utils.dir as dir
 from natsort import natsorted, ns
+from pypdf import PdfMerger
 
 
 class commands:
@@ -86,3 +87,26 @@ class commands:
                                 append_images=image_list)
                 print('Saved:', pdfPath)
         print('Done all processes')
+
+    def mergePDF(self):
+        """_summary_
+        Merge PDF follow folder under ./pdfs
+        """
+
+        rootPDFs: str = 'pdfs'
+        files = natsorted(os.listdir(rootPDFs), alg=ns.PATH)
+
+        for dir in files:
+            filePath = os.path.join(rootPDFs, dir)
+            if os.path.isdir(filePath):
+                newPDfDirPath = os.path.join(filePath, 'newPDF')
+                pdfs = natsorted(os.listdir(newPDfDirPath), alg=ns.PATH)
+
+                merger = PdfMerger()
+                for pdf in pdfs:
+                    pdfPath = os.path.join(newPDfDirPath, pdf)
+                    merger.append(pdfPath)
+
+                mergedPDFPath = os.path.join('readypdf', dir + '.pdf')
+                merger.write(mergedPDFPath)
+                merger.close()
