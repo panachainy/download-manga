@@ -7,7 +7,7 @@ import services.manga_a as manga_a
 import os
 from PIL import Image
 import utils.dir as dir
-
+from natsort import natsorted, ns
 
 class downloadManga:
     def load(self):
@@ -34,13 +34,17 @@ class downloadManga:
                     chapterLink.url, imageConfig.alt, chapterPath)
                 image_list = []
 
-                for imageFile in os.listdir(chapterPath):
+                imageFiles = natsorted(os.listdir(chapterPath), alg=ns.PATH)
+
+                for imageFile in imageFiles:
                     filePath = chapterPath + imageFile
+                    print('filePath', filePath)
 
                     image_list.append(Image.open(filePath).convert('RGB'))
 
-                dir.create_folder(folderPath + "/newPDF/")
-                pdfPath = folderPath + "/newPDF/" + chapterLink.chapter + ".pdf"
+                dir.create_folder(folderPath + "/newPDF/" + chapterLink.folder)
+                pdfPath = folderPath + "/newPDF/" + chapterLink.folder + \
+                    "/" + chapterLink.chapter + ".pdf"
 
                 firstImage = image_list[0]
                 del image_list[0]
