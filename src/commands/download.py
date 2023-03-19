@@ -6,7 +6,7 @@ from typing import List
 import services.manga_a as manga_a
 import os
 from PIL import Image
-import utils.dir as dir
+import utils.dir as dirLib
 from natsort import natsorted, ns
 from pypdf import PdfMerger
 
@@ -45,56 +45,55 @@ class commands:
 
                     folderPath = 'pdfs/' + chapterLink.folder + '/'
                     chapterPath = folderPath + chapterLink.chapter + '/'
-                    manga_a.downloadFromMangaA(
-                        chapterLink.url, chapterPath)
+                    try:
+                        manga_a.downloadFromMangaA(
+                            chapterLink.url, chapterPath)
+                    except Exception as e:
+                        print(imageConfig.folder, chapterLink.chapter,
+                              'error in:', chapterLink.url, "detail", e)
         else:
             print('Skip download')
 
-        print('Start convert images to pdfs..')
+        print("=== downloaded ===")
 
-        for imageConfig in imageConfigs:
-            chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
-            for chapterLink in chapterLinks:
-                folderPath = 'pdfs/' + chapterLink.folder + '/'
-                chapterPath = folderPath + chapterLink.chapter + '/'
-
-                if chapter:
-                    if chapterLink.chapter != chapter:
-                        continue
-
-                image_list = []
-
-                imageFiles = natsorted(os.listdir(chapterPath), alg=ns.PATH)
-
-                for imageFile in imageFiles:
-                    filePath = chapterPath + imageFile
-
-                    image_list.append(Image.open(filePath).convert('RGB'))
-
-                if not image_list:
-                    print('[SKIP] not have image_list in',
-                          chapterLink.folder + chapterLink.chapter)
-                    continue
-
-                pdfFolder = folderPath + "/newPDF/" + chapterLink.folder
-                dir.create_folder(pdfFolder)
-                pdfPath = pdfFolder + "/" + chapterLink.chapter + ".pdf"
-
-                firstImage = image_list[0]
-                del image_list[0]
-
-                firstImage.save(pdfPath, save_all=True,
-                                append_images=image_list)
-                print('Saved:', pdfPath)
-        print('Done all processes')
-
-    def convertImagesToPDF(self):
+    def makePDFs(self):
         # TODO:
         """_summary_
         convert all manga under `pdfs` to .pdf in each chapter
         """
 
-        return
+        rootPDFs: str = 'pdfs'
+        files = natsorted(os.listdir(rootPDFs), alg=ns.PATH)
+        for dir in files:
+            titleDirPath = os.path.join(rootPDFs, dir)
+            if os.path.isdir(titleDirPath):
+                chapterDirs = natsorted(
+                    os.listdir(titleDirPath), alg=ns.PATH)
+                for chapterDir in chapterDirs:
+                    if chapterDir == 'newPDF':
+                        continue
+
+                    chapterDirPath = os.path.join(titleDirPath, chapterDir)
+
+                    image_list = []
+                    imageFiles = natsorted(
+                        os.listdir(chapterDirPath), alg=ns.PATH)
+                    for imageFile in imageFiles:
+                        filePath = os.path.join(chapterDirPath, imageFile)
+                        image_list.append(Image.open(filePath).convert('RGB'))
+
+                    pdfFolder = os.path.join(titleDirPath, "newPDF")
+
+                    dirLib.create_folder(pdfFolder)
+
+                    pdfPath = os.path.join(pdfFolder, chapterDir + ".pdf")
+                    # print('image_list', image_list)
+                    # print('pdfPath', pdfPath)
+                    firstImage = image_list[0]
+                    del image_list[0]
+                    firstImage.save(pdfPath, save_all=True,
+                                    append_images=image_list)
+                    print('Saved:', pdfPath)
 
     def mergePDF(self):
         """_summary_
