@@ -10,7 +10,7 @@ from typing import List
 def downloadFromMangaA(url: str, folderPath: str):
     exiting = dir.create_folder(folderPath)
     if exiting:
-        print(f'[SKIP-DOWNLOAD] ${folderPath} is exiting')
+        print(f'[SKIP-DOWNLOAD] {folderPath} is exiting')
         return
 
     fileFormat = '{:03d}'

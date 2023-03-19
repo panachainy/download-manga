@@ -95,7 +95,7 @@ class commands:
                                     append_images=image_list)
                     print('Saved:', pdfPath)
 
-    def mergePDF(self):
+    def mergePDFs(self):
         """_summary_
         Merge PDF follow folder under ./pdfs
         """
@@ -114,6 +114,13 @@ class commands:
                     pdfPath = os.path.join(newPDfDirPath, pdf)
                     merger.append(pdfPath)
 
-                mergedPDFPath = os.path.join('readypdf', dir + '.pdf')
+                def remove_extension(fileName: str):
+                    return os.path.splitext(fileName)[0]
+
+                destinationDir = os.path.join('readypdf')
+
+                dirLib.create_folder(destinationDir)
+                mergedPDFPath = os.path.join(
+                    destinationDir,  f"{dir} {remove_extension(pdfs[0])}-{remove_extension(pdfs[-1])}.pdf")
                 merger.write(mergedPDFPath)
                 merger.close()

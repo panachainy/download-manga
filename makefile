@@ -19,16 +19,16 @@ run:
 r.s:
 	python src/main.py download --skipDownload
 
-m: mergePDF
+merge: mergePDF
 mergePDF:
-	python src/main.py mergePDF
+	python src/main.py mergePDFs
 
 d: dev
 dev:
-	# nodemon --exec python src/main.py mergePDF
+	# nodemon --exec python src/main.py mergePDFs
 	nodemon --exec python src/main.py makePDFs
 
-m:
+make:
 	python src/main.py makePDFs
 
 # clean pdfs
