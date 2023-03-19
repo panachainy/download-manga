@@ -88,6 +88,14 @@ class commands:
                 print('Saved:', pdfPath)
         print('Done all processes')
 
+    def convertImagesToPDF(self):
+        # TODO:
+        """_summary_
+        convert all manga under `pdfs` to .pdf in each chapter
+        """
+
+        return
+
     def mergePDF(self):
         """_summary_
         Merge PDF follow folder under ./pdfs
