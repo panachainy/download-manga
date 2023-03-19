@@ -10,14 +10,8 @@ def download_image_v1(url: str, file_path: str):
 
 
 def download_image_v2(url: str, file_path: str):
-    try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req) as response, open(file_path, 'wb') as outfile:
-            outfile.write(response.read())
-    except Exception as e:
-        if hasattr(e, 'message'):
-            print(e.message)
-        else:
-            print(e)
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req) as response, open(file_path, 'wb') as outfile:
+        outfile.write(response.read())
