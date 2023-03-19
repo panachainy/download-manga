@@ -8,6 +8,11 @@ from typing import List
 
 
 def downloadFromMangaA(url: str, folderPath: str):
+    exiting = dir.create_folder(folderPath)
+    if exiting:
+        print(f'[SKIP-DOWNLOAD] ${folderPath} is exiting')
+        return
+
     fileFormat = '{:03d}'
 
     response = requests.get(url)
@@ -19,8 +24,6 @@ def downloadFromMangaA(url: str, folderPath: str):
     links: list[str] = []
     for image in images:
         links.append(image.get('src'))
-
-    dir.create_folder(folderPath)
 
     page = 1
     for link in links:
