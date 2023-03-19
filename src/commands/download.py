@@ -21,7 +21,7 @@ class downloadManga:
     #         manga_a.downloadFromMangaA(
     #             imageConfig.url, imageConfig.alt, imageConfig.folder)
 
-    def t(self, chapter: str = "", download: bool = True):
+    def t(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
 
         Args:
@@ -33,9 +33,8 @@ class downloadManga:
             data = json.load(f)
         imageConfigs = model.ImageConfig.formJson(data)
 
-        print('Start download images..')
-
-        if download:
+        if skipDownload == False:
+            print('Start download images..')
             for imageConfig in imageConfigs:
                 chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
                 for chapterLink in chapterLinks:
@@ -43,6 +42,8 @@ class downloadManga:
                     chapterPath = folderPath + chapterLink.chapter + '/'
                     manga_a.downloadFromMangaA(
                         chapterLink.url, chapterPath)
+        else:
+            print('Skip download')
 
         print('Start convert images to pdfs..')
 

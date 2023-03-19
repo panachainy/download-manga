@@ -8,7 +8,7 @@ install:
 
 r: run
 run:
-	python src/main.py
+	python src/main.py t
 
-e:
-	python src/main.py t --download=false
+r.s:
+	python src/main.py t --skipDownload
