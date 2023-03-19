@@ -27,10 +27,10 @@ class downloadManga:
         for imageConfig in imageConfigs:
             chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
             for chapterLink in chapterLinks:
-                folderPath = 'images/' + chapterLink.folder + '/'
+                folderPath = 'pdfs/' + chapterLink.folder + '/'
                 chapterPath = folderPath + chapterLink.chapter + '/'
                 manga_a.downloadFromMangaA(
-                    chapterLink.url, imageConfig.alt, folderPath)
+                    chapterLink.url, imageConfig.alt, chapterPath)
                 image_list = []
 
                 for imageFile in os.listdir(chapterPath):
@@ -40,6 +40,9 @@ class downloadManga:
 
                 pdfPath = folderPath + chapterLink.chapter + ".pdf"
 
-                image_list[0].save(pdfPath, save_all=True,
+                firstImage = image_list[0]
+                del image_list[0]
+
+                firstImage.save(pdfPath, save_all=True,
                                    append_images=image_list)
                 print('Saved:', pdfPath)
