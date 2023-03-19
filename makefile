@@ -13,11 +13,9 @@ install:
 	pip install -r requirements.txt
 
 r: run
+download: run
 run:
 	python src/main.py download
-
-r.s:
-	python src/main.py download --skipDownload
 
 merge: mergePDF
 mergePDF:
