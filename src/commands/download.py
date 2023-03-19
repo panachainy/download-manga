@@ -11,15 +11,15 @@ from natsort import natsorted, ns
 
 
 class downloadManga:
-    def load(self):
-        with open("config.json") as f:
-            data = json.load(f)
+    # def load(self):
+    #     with open("config.json") as f:
+    #         data = json.load(f)
 
-        imageConfigs = model.ImageConfig.formJson(data)
+    #     imageConfigs = model.ImageConfig.formJson(data)
 
-        for imageConfig in imageConfigs:
-            manga_a.downloadFromMangaA(
-                imageConfig.url, imageConfig.alt, imageConfig.folder)
+    #     for imageConfig in imageConfigs:
+    #         manga_a.downloadFromMangaA(
+    #             imageConfig.url, imageConfig.alt, imageConfig.folder)
 
     def t(self, chapter: str = "", download: bool = True):
         """_summary_
@@ -42,7 +42,7 @@ class downloadManga:
                     folderPath = 'pdfs/' + chapterLink.folder + '/'
                     chapterPath = folderPath + chapterLink.chapter + '/'
                     manga_a.downloadFromMangaA(
-                        chapterLink.url, imageConfig.alt, chapterPath)
+                        chapterLink.url, chapterPath)
 
         print('Start convert images to pdfs..')
 
@@ -80,3 +80,4 @@ class downloadManga:
                 firstImage.save(pdfPath, save_all=True,
                                 append_images=image_list)
                 print('Saved:', pdfPath)
+        print('Done all processes')

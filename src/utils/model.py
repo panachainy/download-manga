@@ -5,7 +5,7 @@ from pydantic.dataclasses import dataclass
 
 class ImageConfig(BaseModel):
     url: str
-    alt: str
+    # alt: str
     # TODO: remove
     folder: str
 
