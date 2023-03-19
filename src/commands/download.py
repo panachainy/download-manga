@@ -10,7 +10,7 @@ import utils.dir as dir
 from natsort import natsorted, ns
 
 
-class downloadManga:
+class commands:
     # def load(self):
     #     with open("config.json") as f:
     #         data = json.load(f)
@@ -21,7 +21,7 @@ class downloadManga:
     #         manga_a.downloadFromMangaA(
     #             imageConfig.url, imageConfig.alt, imageConfig.folder)
 
-    def t(self, chapter: str = "", skipDownload: bool = False):
+    def download(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
 
         Args:
