@@ -11,4 +11,4 @@ run:
 	python src/main.py
 
 e:
-	python src/main.py t
+	python src/main.py t --download=false

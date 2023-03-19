@@ -21,20 +21,28 @@ class downloadManga:
             manga_a.downloadFromMangaA(
                 imageConfig.url, imageConfig.alt, imageConfig.folder)
 
-    def t(self):
+    def t(self, chapter: str = "", download: bool = True):
+        """_summary_
+
+        Args:
+            chapter (str): _description_
+            download (bool): _description_
+        """
+
         with open("config.json") as f:
             data = json.load(f)
         imageConfigs = model.ImageConfig.formJson(data)
 
         print('Start download images..')
 
-        for imageConfig in imageConfigs:
-            chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
-            for chapterLink in chapterLinks:
-                folderPath = 'pdfs/' + chapterLink.folder + '/'
-                chapterPath = folderPath + chapterLink.chapter + '/'
-                manga_a.downloadFromMangaA(
-                    chapterLink.url, imageConfig.alt, chapterPath)
+        if download:
+            for imageConfig in imageConfigs:
+                chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
+                for chapterLink in chapterLinks:
+                    folderPath = 'pdfs/' + chapterLink.folder + '/'
+                    chapterPath = folderPath + chapterLink.chapter + '/'
+                    manga_a.downloadFromMangaA(
+                        chapterLink.url, imageConfig.alt, chapterPath)
 
         print('Start convert images to pdfs..')
 
@@ -44,15 +52,23 @@ class downloadManga:
                 folderPath = 'pdfs/' + chapterLink.folder + '/'
                 chapterPath = folderPath + chapterLink.chapter + '/'
 
+                if chapter:
+                    if chapterLink.chapter != chapter:
+                        continue
+
                 image_list = []
 
                 imageFiles = natsorted(os.listdir(chapterPath), alg=ns.PATH)
 
                 for imageFile in imageFiles:
                     filePath = chapterPath + imageFile
-                    print('filePath', filePath)
 
                     image_list.append(Image.open(filePath).convert('RGB'))
+
+                if not image_list:
+                    print('[SKIP] not have image_list in',
+                          chapterLink.folder + chapterLink.chapter)
+                    continue
 
                 pdfFolder = folderPath + "/newPDF/" + chapterLink.folder
                 dir.create_folder(pdfFolder)
