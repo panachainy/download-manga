@@ -4,7 +4,9 @@
 
 1. create file `config.json` and add data (example is `ex-config.json`)
 2. make i
-3. make r
+3. Download follow config.json `make download`
+4. convert images to pdfs `make make`
+5. merge pdfs to 1 pdf `make merge`
 
 ## TODO
 
