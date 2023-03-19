@@ -1,5 +1,9 @@
 SHELL := /bin/zsh
 
+p: prepair
+prepair:
+	npm i -g nodemon
+
 f: freeze
 freeze:
 	pip freeze > requirements.txt
@@ -10,10 +14,18 @@ install:
 
 r: run
 run:
-	python src/main.py t
+	python src/main.py download
 
 r.s:
-	python src/main.py t --skipDownload
+	python src/main.py download --skipDownload
+
+m: mergePDF
+mergePDF:
+	python src/main.py mergePDF
+
+d: dev
+dev:
+	nodemon --exec python src/main.py mergePDF
 
 # clean pdfs
 clean:
