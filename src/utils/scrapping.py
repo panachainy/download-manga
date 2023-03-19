@@ -2,10 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 import utils.model as model
 from typing import List
-
+# from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 def get_chapter_link_from(url: str) -> List[model.TitleConfig]:
+    # print('[======]', requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS)
+    # requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'DES-CBC3-SHA'
+
+    # requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    # print('[======]', requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS)
+
+    # print("==after set DEFAULT_CIPHERS==")
     response = requests.get(url)
+    # print("==res==")
+
     soup = BeautifulSoup(response.text, 'html.parser')
     objs = soup.find_all('div', {"class": "eph-num"})
     title = soup.find('h1', {"class": "entry-title"})
