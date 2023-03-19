@@ -1,15 +1,6 @@
 
-import utils.model as model
-import json
-# import os
-from typing import List
-import services.manga_a as manga_a
+import fire
+import commands.download as download
 
-with open("config.json") as f:
-    data = json.load(f)
-
-imageConfigs = model.ImageConfig.formJson(data)
-
-for obj in imageConfigs:
-    print(obj.url, obj.alt, obj.folder)
-    manga_a.downloadFromMangaA(obj.url, obj.alt, obj.folder)
+if __name__ == '__main__':
+    fire.Fire(download.downloadManga())
