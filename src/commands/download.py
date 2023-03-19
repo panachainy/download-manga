@@ -13,5 +13,4 @@ class downloadManga:
         imageConfigs = model.ImageConfig.formJson(data)
 
         for obj in imageConfigs:
-            print(obj.url, obj.alt, obj.folder)
             manga_a.downloadFromMangaA(obj.url, obj.alt, obj.folder)
