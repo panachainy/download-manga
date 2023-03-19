@@ -38,6 +38,10 @@ class downloadManga:
             for imageConfig in imageConfigs:
                 chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
                 for chapterLink in chapterLinks:
+                    if chapter:
+                        if chapterLink.chapter != chapter:
+                            continue
+
                     folderPath = 'pdfs/' + chapterLink.folder + '/'
                     chapterPath = folderPath + chapterLink.chapter + '/'
                     manga_a.downloadFromMangaA(
