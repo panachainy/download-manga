@@ -9,6 +9,7 @@ from PIL import Image
 import utils.dir as dir
 from natsort import natsorted, ns
 
+
 class downloadManga:
     def load(self):
         with open("config.json") as f:
@@ -25,6 +26,8 @@ class downloadManga:
             data = json.load(f)
         imageConfigs = model.ImageConfig.formJson(data)
 
+        print('Start download images..')
+
         for imageConfig in imageConfigs:
             chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
             for chapterLink in chapterLinks:
@@ -32,6 +35,15 @@ class downloadManga:
                 chapterPath = folderPath + chapterLink.chapter + '/'
                 manga_a.downloadFromMangaA(
                     chapterLink.url, imageConfig.alt, chapterPath)
+
+        print('Start convert images to pdfs..')
+
+        for imageConfig in imageConfigs:
+            chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
+            for chapterLink in chapterLinks:
+                folderPath = 'pdfs/' + chapterLink.folder + '/'
+                chapterPath = folderPath + chapterLink.chapter + '/'
+
                 image_list = []
 
                 imageFiles = natsorted(os.listdir(chapterPath), alg=ns.PATH)
@@ -42,9 +54,9 @@ class downloadManga:
 
                     image_list.append(Image.open(filePath).convert('RGB'))
 
-                dir.create_folder(folderPath + "/newPDF/" + chapterLink.folder)
-                pdfPath = folderPath + "/newPDF/" + chapterLink.folder + \
-                    "/" + chapterLink.chapter + ".pdf"
+                pdfFolder = folderPath + "/newPDF/" + chapterLink.folder
+                dir.create_folder(pdfFolder)
+                pdfPath = pdfFolder + "/" + chapterLink.chapter + ".pdf"
 
                 firstImage = image_list[0]
                 del image_list[0]
