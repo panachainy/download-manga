@@ -34,25 +34,22 @@ class commands:
             data = json.load(f)
         imageConfigs = model.ImageConfig.formJson(data)
 
-        if skipDownload == False:
-            print('Start download images..')
-            for imageConfig in imageConfigs:
-                chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
-                for chapterLink in chapterLinks:
-                    if chapter:
-                        if chapterLink.chapter != chapter:
-                            continue
+        print('Start download images..')
+        for imageConfig in imageConfigs:
+            chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
+            for chapterLink in chapterLinks:
+                if chapter:
+                    if chapterLink.chapter != chapter:
+                        continue
 
-                    folderPath = 'pdfs/' + chapterLink.folder + '/'
-                    chapterPath = folderPath + chapterLink.chapter + '/'
-                    try:
-                        manga_a.downloadFromMangaA(
-                            chapterLink.url, chapterPath)
-                    except Exception as e:
-                        print(imageConfig.folder, chapterLink.chapter,
-                              'error in:', chapterLink.url, "detail", e)
-        else:
-            print('Skip download')
+                folderPath = 'pdfs/' + chapterLink.folder + '/'
+                chapterPath = folderPath + chapterLink.chapter + '/'
+                try:
+                    manga_a.downloadFromMangaA(
+                        chapterLink.url, chapterPath)
+                except Exception as e:
+                    print(imageConfig.folder, chapterLink.chapter,
+                            'error in:', chapterLink.url, "detail", e)
 
         print("=== downloaded ===")
 
