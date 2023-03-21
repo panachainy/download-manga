@@ -49,7 +49,12 @@ class commands:
                         chapterLink.url, chapterPath)
                 except Exception as e:
                     print(imageConfig.folder, chapterLink.chapter,
-                            'error in:', chapterLink.url, "detail", e)
+                          'error in:', chapterLink.url, "detail", e)
+
+                    # remove folder chapterPath
+                    os.removedirs(chapterPath)
+
+                    continue
 
         print("=== downloaded ===")
 
