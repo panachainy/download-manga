@@ -47,11 +47,14 @@ class commands:
                 try:
                     manga_a.downloadFromMangaA(
                         chapterLink.url, chapterPath)
+                    print(f"=== {chapterPath} downloaded ===")
                 except Exception as e:
                     print(imageConfig.folder, chapterLink.chapter,
                           'error in:', chapterLink.url, "detail", e)
-
-                    # remove folder chapterPath
+                    
+                    for imageFile in os.listdir(chapterPath):
+                        os.remove(os.path.join(chapterPath, imageFile))
+                    
                     os.removedirs(chapterPath)
 
                     continue
