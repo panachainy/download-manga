@@ -24,6 +24,10 @@ merge: mergePDF
 mergePDF:
 	python src/main.py mergePDFs
 
+pdf:
+	python src/main.py makePDFs
+	python src/main.py mergePDFs
+
 d: dev
 dev:
 	# nodemon --exec python src/main.py mergePDFs
