@@ -1,4 +1,6 @@
 
+from bs4 import BeautifulSoup
+import requests
 import utils.model as model
 import utils.scrapping as scrapping
 import json
@@ -9,18 +11,47 @@ from PIL import Image
 import utils.dir as dirLib
 from natsort import natsorted, ns
 from pypdf import PdfMerger
+import utils.image as imageLib
 
 
 class commands:
-    # def load(self):
-    #     with open("config.json") as f:
-    #         data = json.load(f)
+    def load_config(self):
+        with open("config.json") as f:
+            data = json.load(f)
+        imageConfigs = model.ImageConfig.formJson(data)
+        for imageConfig in imageConfigs:
+            chapterLinks = scrapping.get_chapter_link_from(imageConfig.url)
 
-    #     imageConfigs = model.ImageConfig.formJson(data)
+            folderPath = 'configs/' + chapterLinks[0].folder + "/"
+            configPath = folderPath + 'config.json'
+            dirLib.create_folder(folderPath)
 
-    #     for imageConfig in imageConfigs:
-    #         manga_a.downloadFromMangaA(
-    #             imageConfig.url, imageConfig.alt, imageConfig.folder)
+            for chapterLink in chapterLinks:
+                chapterPath = folderPath + chapterLink.chapter + '.json'
+                fileFormat = '{:03d}'
+
+                response = requests.get(chapterLink.url)
+                soup = BeautifulSoup(response.text, 'html.parser')
+
+                readArea = soup.find('div', id="readerarea")
+                images = readArea.find_all("img")  # type: ignore
+
+                links: list[str] = []
+                for image in images:
+                    links.append(image.get('src'))
+
+                configs = []
+                page = 1
+                for link in links:
+                    full_path = imageLib.get_full_path(
+                        folderPath, fileFormat.format(page))
+
+                    configs.append({"full_path": full_path, "url": link})
+                    page = page + 1
+
+        # write to file in json format
+        with open(chapterPath, 'a') as f:
+            json.dump(configs, f)
 
     def download(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
@@ -51,10 +82,10 @@ class commands:
                 except Exception as e:
                     print(imageConfig.folder, chapterLink.chapter,
                           'error in:', chapterLink.url, "detail", e)
-                    
+
                     for imageFile in os.listdir(chapterPath):
                         os.remove(os.path.join(chapterPath, imageFile))
-                    
+
                     os.removedirs(chapterPath)
 
                     continue

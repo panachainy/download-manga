@@ -20,6 +20,9 @@ download: run
 run:
 	python src/main.py download
 
+load_config:
+	python src/main.py load_config
+
 make:
 	python src/main.py makePDFs
 
