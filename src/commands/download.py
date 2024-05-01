@@ -49,9 +49,9 @@ class commands:
                     configs.append({"full_path": full_path, "url": link})
                     page = page + 1
 
-        # write to file in json format
-        with open(chapterPath, 'a') as f:
-            json.dump(configs, f)
+                # write to file in json format
+                with open(chapterPath, 'a') as f:
+                    json.dump(configs, f, indent=4)
 
     def download(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
