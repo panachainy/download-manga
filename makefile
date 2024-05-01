@@ -4,13 +4,16 @@ p: prepair
 prepair:
 	npm i -g nodemon
 
-f: freeze
-freeze:
-	pip freeze > requirements.txt
+sh:
+	poetry shell
 
-i: install
-install:
-	pip install -r requirements.txt
+# f: freeze
+# freeze:
+# 	pip freeze > requirements.txt
+
+# i: install
+# install:
+# 	pip install -r requirements.txt
 
 r: run
 download: run

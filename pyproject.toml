@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "download-manga"
+version = "0.1.0"
+description = ""
+authors = ["panachainy <panachai.ny@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+beautifulsoup4 = "^4.12.3"
+fire = "^0.6.0"
+pydantic = "^2.7.1"
+requests = "^2.31.0"
+pillow = "^10.3.0"
+natsort = "^8.4.0"
+pypdf = "^4.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
