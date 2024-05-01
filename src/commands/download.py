@@ -44,7 +44,7 @@ class commands:
                 page = 1
                 for link in links:
                     full_path = imageLib.get_full_path(
-                        "pdfs/", fileFormat.format(page))
+                        'pdfs/' + chapterLink.folder + '/' + chapterLink.chapter + "/", fileFormat.format(page))
 
                     configs.append({"full_path": full_path, "url": link})
                     page = page + 1
