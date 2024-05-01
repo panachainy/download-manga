@@ -3,10 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
+	"strings"
 )
 
 type ChapterConfig struct {
@@ -16,15 +19,29 @@ type ChapterConfig struct {
 
 func main() {
 	const configFolder = "./configs/"
+	const destinationFolder = "./pdfs/"
+
+	// create fodler
+	os.Mkdir(destinationFolder, 0755)
 
 	// read configs
 	var folders = get_files_from_folder(configFolder)
 	for _, folder := range folders {
-		fmt.Println(folder.Name())
+		os.Mkdir(destinationFolder+folder.Name(), 0755)
+
 		var files = get_files_from_folder(configFolder + folder.Name())
 		for _, file := range files {
-			var chapterConfig = get_chapter_config(configFolder + folder.Name() + "/" + file.Name())
-			fmt.Println(chapterConfig)
+			os.Mkdir(destinationFolder+folder.Name()+"/"+strings.Split(file.Name(), ".")[0], 0755)
+			var chapterConfigs = get_chapter_config(configFolder + folder.Name() + "/" + file.Name())
+
+			for _, chapterConfig := range chapterConfigs {
+				fmt.Println(chapterConfig.FullPath)
+				fmt.Println(chapterConfig.Url)
+
+				download_file(chapterConfig.Url, chapterConfig.FullPath)
+				break
+			}
+
 			break
 		}
 	}
@@ -71,6 +88,36 @@ func get_files_from_folder(directory_url string) []fs.FileInfo {
 	return fileInfos
 }
 
-// func download_file(url string) {
-// 	// code to download file
-// }
+func download_file(url string, path string) {
+
+	// Specify the URL of the file you want to download
+	fileURL := url
+
+	// Extract the file name from the URL
+	// fileName := filepath.Base(fileURL)
+
+	// Create a new file for writing the downloaded content
+	file, err := os.Create(path)
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+		return
+	}
+	defer file.Close()
+
+	// Make the HTTP GET request
+	resp, err := http.Get(fileURL)
+	if err != nil {
+		fmt.Println("Error downloading file:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Copy the file content to the local file
+	_, err = io.Copy(file, resp.Body)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
+
+	fmt.Println("File downloaded:", path)
+}
