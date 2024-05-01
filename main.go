@@ -42,8 +42,6 @@ func main() {
 			}
 
 			wg.Wait()
-
-			break
 		}
 	}
 }
