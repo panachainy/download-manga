@@ -8,6 +8,11 @@
 4. convert images to pdfs `make make`
 5. merge pdfs to 1 pdf `make merge`
 
+## Download v2
+
+- `make load_config` for feed all urls to download to configs
+- `make load_download` for download all manga (handled by golang)
+
 ## TODO
 
 - implment SQLite for tracking success or fail in load / convert / per chapter per title
