@@ -15,6 +15,9 @@ run:
 load_config:
 	python src/main.py load_config
 
+load_download:
+	go run main.go
+
 make:
 	python src/main.py makePDFs
 
