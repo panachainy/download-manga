@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 )
 
 type ChapterConfig struct {
@@ -33,14 +34,14 @@ func main() {
 		for _, file := range files {
 			os.Mkdir(destinationFolder+folder.Name()+"/"+strings.Split(file.Name(), ".")[0], 0755)
 			var chapterConfigs = get_chapter_config(configFolder + folder.Name() + "/" + file.Name())
+			var wg sync.WaitGroup
 
 			for _, chapterConfig := range chapterConfigs {
-				fmt.Println(chapterConfig.FullPath)
-				fmt.Println(chapterConfig.Url)
-
-				download_file(chapterConfig.Url, chapterConfig.FullPath)
-				break
+				wg.Add(1)
+				go download_file(chapterConfig.Url, chapterConfig.FullPath, &wg)
 			}
+
+			wg.Wait()
 
 			break
 		}
@@ -88,7 +89,8 @@ func get_files_from_folder(directory_url string) []fs.FileInfo {
 	return fileInfos
 }
 
-func download_file(url string, path string) {
+func download_file(url string, path string, wg *sync.WaitGroup) {
+	defer wg.Done()
 
 	// Specify the URL of the file you want to download
 	fileURL := url
