@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+const retryFolder = "configs/retries"
+
 type ChapterConfig struct {
 	FullPath string `json:"full_path"`
 	Url      string `json:"url"`
@@ -22,6 +24,23 @@ type ChapterConfig struct {
 
 func main() {
 	LoadDownload()
+	// LoadRetry()
+}
+
+func LoadRetry() {
+
+	files := getFilesFromFolder(retryFolder)
+	for _, file := range files {
+		var chapterConfig = getChapterConfig(retryFolder + "/" + file.Name())
+		var wg sync.WaitGroup
+
+		for _, config := range chapterConfig {
+			wg.Add(1)
+			go download_file(config.Url, config.FullPath, &wg)
+		}
+
+		wg.Wait()
+	}
 }
 
 // TODO: make it command
@@ -33,14 +52,14 @@ func LoadDownload() {
 	os.Mkdir(destinationFolder, 0755)
 
 	// read configs
-	var folders = get_files_from_folder(configFolder)
+	var folders = getFilesFromFolder(configFolder)
 	for _, folder := range folders {
 		os.Mkdir(destinationFolder+folder.Name(), 0755)
 
-		var files = get_files_from_folder(configFolder + folder.Name())
+		var files = getFilesFromFolder(configFolder + folder.Name())
 		for _, file := range files {
 			os.Mkdir(destinationFolder+folder.Name()+"/"+strings.Split(file.Name(), ".")[0], 0755)
-			var chapterConfigs = get_chapter_config(configFolder + folder.Name() + "/" + file.Name())
+			var chapterConfigs = getChapterConfig(configFolder + folder.Name() + "/" + file.Name())
 			var wg sync.WaitGroup
 
 			for _, chapterConfig := range chapterConfigs {
@@ -63,7 +82,7 @@ func read_file(filePath string) string {
 	return string(data)
 }
 
-func get_chapter_config(filePath string) []ChapterConfig {
+func getChapterConfig(filePath string) []ChapterConfig {
 	var jsonStr = read_file(filePath)
 
 	var chapterConfig []ChapterConfig
@@ -75,7 +94,7 @@ func get_chapter_config(filePath string) []ChapterConfig {
 	return chapterConfig
 }
 
-func get_files_from_folder(directory_url string) []fs.FileInfo {
+func getFilesFromFolder(directory_url string) []fs.FileInfo {
 	// Open the directory to read its contents
 	files, err := os.Open(directory_url)
 	if err != nil {
@@ -137,9 +156,11 @@ func logErrorConfig(url string, path string) {
 		FullPath: path,
 		Url:      url,
 	}
-	logFile := fmt.Sprintf("configs/retries/%v.json", generateRandomString(9))
 
-	os.MkdirAll("configs/retries", 0755)
+	var chapterConfigs = []ChapterConfig{chapterConfig}
+	logFile := fmt.Sprintf(retryFolder+"/%v.json", generateRandomString(9))
+
+	os.MkdirAll(retryFolder, 0755)
 	file, err := os.Create(logFile)
 
 	if err != nil {
@@ -149,7 +170,7 @@ func logErrorConfig(url string, path string) {
 
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(chapterConfig); err != nil {
+	if err := encoder.Encode(chapterConfigs); err != nil {
 		fmt.Println("Error encoding JSON:", err)
 		return
 	}
