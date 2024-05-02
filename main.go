@@ -19,6 +19,11 @@ type ChapterConfig struct {
 }
 
 func main() {
+	LoadDownload()
+}
+
+// TODO: make it command
+func LoadDownload() {
 	const configFolder = "./configs/"
 	const destinationFolder = "./pdfs/"
 
