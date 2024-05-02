@@ -137,9 +137,9 @@ func logErrorConfig(url string, path string) {
 		FullPath: path,
 		Url:      url,
 	}
-	logFile := fmt.Sprintf("configs/errs/%v.json", generateRandomString(9))
+	logFile := fmt.Sprintf("configs/retries/%v.json", generateRandomString(9))
 
-	os.MkdirAll("configs/errs", 0755)
+	os.MkdirAll("configs/retries", 0755)
 	file, err := os.Create(logFile)
 
 	if err != nil {
