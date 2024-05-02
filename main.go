@@ -7,10 +7,12 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strings"
 	"sync"
+	"time"
 )
 
 type ChapterConfig struct {
@@ -20,6 +22,7 @@ type ChapterConfig struct {
 
 func main() {
 	LoadDownload()
+
 }
 
 // TODO: make it command
@@ -105,6 +108,7 @@ func download_file(url string, path string, wg *sync.WaitGroup) {
 	file, err := os.Create(path)
 	if err != nil {
 		fmt.Println("Error creating file:", err)
+		logErrorConfig(url, path)
 		return
 	}
 	defer file.Close()
@@ -113,6 +117,7 @@ func download_file(url string, path string, wg *sync.WaitGroup) {
 	resp, err := http.Get(fileURL)
 	if err != nil {
 		fmt.Println("Error downloading file:", err)
+		logErrorConfig(url, path)
 		return
 	}
 	defer resp.Body.Close()
@@ -121,8 +126,45 @@ func download_file(url string, path string, wg *sync.WaitGroup) {
 	_, err = io.Copy(file, resp.Body)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
+		logErrorConfig(url, path)
 		return
 	}
 
 	fmt.Println("File downloaded:", path)
+}
+
+func logErrorConfig(url string, path string) {
+	var chapterConfig = ChapterConfig{
+		FullPath: path,
+		Url:      url,
+	}
+	logFile := fmt.Sprintf("configs/errs/%v.json", generateRandomString(9))
+
+	os.MkdirAll("configs/errs", 0755)
+	file, err := os.Create(logFile)
+	// file, err := os.OpenFile("err_log.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(chapterConfig); err != nil {
+		fmt.Println("Error encoding JSON:", err)
+		return
+	}
+
+}
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func generateRandomString(length int) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
 }
