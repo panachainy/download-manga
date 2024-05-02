@@ -22,7 +22,6 @@ type ChapterConfig struct {
 
 func main() {
 	LoadDownload()
-
 }
 
 // TODO: make it command
@@ -142,7 +141,7 @@ func logErrorConfig(url string, path string) {
 
 	os.MkdirAll("configs/errs", 0755)
 	file, err := os.Create(logFile)
-	// file, err := os.OpenFile("err_log.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return
@@ -154,7 +153,6 @@ func logErrorConfig(url string, path string) {
 		fmt.Println("Error encoding JSON:", err)
 		return
 	}
-
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
