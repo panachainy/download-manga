@@ -16,3 +16,7 @@
 ## TODO
 
 - implment SQLite for tracking success or fail in load / convert / per chapter per title
+
+## setup gsheet
+
+https://docs.streamlit.io/develop/tutorials/databases/private-gsheet
