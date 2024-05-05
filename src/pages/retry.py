@@ -21,7 +21,7 @@ def retry_table():
 
     retry_titles = load_retry_titles()
     st.write("List of retry_titles")
-    st.dataframe(retry_titles)
+    st.dataframe(retry_titles, width=500)
 
     # if st.button('Save Changes'):
     #         with open(fileName, 'w') as f:
