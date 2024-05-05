@@ -19,6 +19,10 @@ def retry_table():
     st.write("List of Config Retries")
     st.dataframe(configRetries)
 
+    retry_titles = load_retry_titles()
+    st.write("List of retry_titles")
+    st.dataframe(retry_titles)
+
     # if st.button('Save Changes'):
     #         with open(fileName, 'w') as f:
     #             json.dump(edited_data, f, indent=2)
@@ -43,6 +47,28 @@ def load_json_config_retry_files_data():
             configRetries += data
 
     return configRetries
+
+
+@st.cache_resource
+def load_retry_titles():
+    titles = []
+
+    jsonFiles = load_json_files_name()
+
+    for file in jsonFiles:
+        # read json file
+        with open(f'{rootConfigRetryFolder}/{file}', 'r') as f:
+            data = json.load(f)
+
+            # full_path: pdfs/Again My Life/ตอนที่ 65/062.jpg
+            full_path = data[0]['full_path']
+            title = os.path.basename(
+                os.path.dirname(os.path.dirname(full_path)))
+
+            if title not in titles:
+                titles += [title]
+
+    return titles
 
 
 retry_table()
