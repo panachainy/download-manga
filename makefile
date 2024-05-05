@@ -3,6 +3,8 @@ SHELL := /bin/zsh
 p: prepair
 prepair:
 	npm i -g nodemon
+i:
+	poetry install
 
 sh:
 	poetry shell
