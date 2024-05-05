@@ -47,6 +47,7 @@ func LoadRetry() {
 func LoadDownload() {
 	const configFolder = "./configs/"
 	const destinationFolder = "./pdfs/"
+	const configDownloaded = "./configDownloaded/"
 
 	// create fodler
 	os.Mkdir(destinationFolder, 0755)
@@ -69,7 +70,10 @@ func LoadDownload() {
 
 			wg.Wait()
 		}
+		// move config to configDownloaded
+		os.Rename(configFolder+folder.Name(), configDownloaded+folder.Name())
 	}
+
 }
 
 func read_file(filePath string) string {
