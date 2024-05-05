@@ -53,6 +53,7 @@ class commands:
                 with open(chapterPath, 'a') as f:
                     json.dump(configs, f, indent=4)
 
+    # @deprecated
     def download(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
 

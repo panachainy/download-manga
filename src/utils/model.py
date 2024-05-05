@@ -5,9 +5,6 @@ from pydantic.dataclasses import dataclass
 
 class ImageConfig(BaseModel):
     url: str
-    # alt: str
-    # TODO: remove
-    folder: str
 
     def formJson(data):
         ImageDataList = List[ImageConfig]
