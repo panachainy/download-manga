@@ -31,8 +31,8 @@ pdf:
 
 d: dev
 dev:
-	# nodemon --exec python src/cli.py mergePDFs
-	nodemon --exec python src/cli.py makePDFs
+	# nodemon --exec python -m streamlit run src/main.py 
+	python -m streamlit run src/main.py 
 
 # clean pdfs
 clean:
