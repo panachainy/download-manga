@@ -100,9 +100,11 @@ class commands:
         """
 
         rootPDFs: str = 'pdfs'
+        chapterPdfPath: str = 'chapterPDFs'
         files = natsorted(os.listdir(rootPDFs), alg=ns.PATH)
         for dir in files:
-            titleDirPath = os.path.join(rootPDFs, dir)
+            title_name = dir
+            titleDirPath = os.path.join(rootPDFs, title_name)
             if os.path.isdir(titleDirPath):
                 chapterDirs = natsorted(
                     os.listdir(titleDirPath), alg=ns.PATH)
@@ -119,11 +121,13 @@ class commands:
                         filePath = os.path.join(chapterDirPath, imageFile)
                         image_list.append(Image.open(filePath).convert('RGB'))
 
-                    pdfFolder = os.path.join(titleDirPath, "newPDF")
+                    chapterTitlePdfPath = os.path.join(
+                        chapterPdfPath, title_name)
 
-                    dirLib.create_folder(pdfFolder)
+                    dirLib.create_folder(chapterTitlePdfPath)
 
-                    pdfPath = os.path.join(pdfFolder, chapterDir + ".pdf")
+                    pdfPath = os.path.join(
+                        chapterTitlePdfPath, title_name + '_' + chapterDir + ".pdf")
                     # print('image_list', image_list)
                     # print('pdfPath', pdfPath)
                     firstImage = image_list[0]

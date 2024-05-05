@@ -23,8 +23,8 @@ type ChapterConfig struct {
 }
 
 func main() {
-	LoadDownload()
-	// LoadRetry()
+	// LoadDownload()
+	LoadRetry()
 }
 
 func LoadRetry() {
