@@ -32,15 +32,17 @@ def load_json_files_name():
 @st.cache_resource
 def load_json_config_retry_files_data():
     configRetries = []
-    
+
     jsonFiles = load_json_files_name()
 
     for file in jsonFiles:
         # read json file
         with open(f'{rootConfigRetryFolder}/{file}', 'r') as f:
             data = json.load(f)
-            configRetries.append(data)
+
+            configRetries += data
 
     return configRetries
+
 
 retry_table()
