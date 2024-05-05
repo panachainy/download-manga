@@ -23,5 +23,7 @@ readypdf/
 
 configs/
 configDownloaded/
+chapterPDFs/
+wait/
 
 .streamlit/secrets.toml
