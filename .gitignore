@@ -23,3 +23,5 @@ readypdf/
 
 configs/
 configDownloaded/
+
+.streamlit/secrets.toml
