@@ -21,14 +21,14 @@ edit_config()
 
 if st.button('Load config'):
     commands = download.commands()
-    commands.load_config
+    commands.load_config()
     
 st.write("on python can't download because we write on golang for easy to make it concurrentcy")
     
 if st.button('Make PDF'):
     commands = download.commands()
-    commands.makePDFs
+    commands.makePDFs()
 
 if st.button('Merge PDF'):
     commands = download.commands()
-    commands.mergePDFs
+    commands.mergePDFs()
