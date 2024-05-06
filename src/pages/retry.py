@@ -2,12 +2,34 @@ import json
 import os
 import streamlit as st
 from natsort import natsorted, ns
+import subprocess
 
 # pdfs/Again My Life/newPDF/ตอนที่ 1.pdf
 rootConfigRetryFolder: str = 'configs/retries'
 
 
 def retry_table():
+    if st.button('Download retry PDFs'):
+        ## TODO: make golang is command
+        ## go run main.go      
+        # Define the command to run
+        cmd = ["go", "run", "main.go"]
+
+        # Run the command
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Get the output and errors
+        output, errors = process.communicate()
+
+        # Check if the command was successful
+        if process.returncode == 0:
+            print("Command executed successfully.")
+        else:
+            print("Error executing command:", errors.decode())
+    
+    retry_titles = load_retry_titles()
+    st.write("List of retry_titles")
+    st.dataframe(retry_titles, width=500)
 
     jsonFiles = load_json_files_name()
 
@@ -18,10 +40,6 @@ def retry_table():
 
     st.write("List of Config Retries")
     st.dataframe(configRetries)
-
-    retry_titles = load_retry_titles()
-    st.write("List of retry_titles")
-    st.dataframe(retry_titles, width=500)
 
     # if st.button('Save Changes'):
     #         with open(fileName, 'w') as f:
