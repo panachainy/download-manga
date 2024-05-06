@@ -16,6 +16,7 @@ import (
 )
 
 const retryFolder = "configs/retries"
+const retryDownloaded = "./configDownloaded/retries"
 
 type ChapterConfig struct {
 	FullPath string `json:"full_path"`
@@ -28,7 +29,6 @@ func main() {
 }
 
 func LoadRetry() {
-
 	files := getFilesFromFolder(retryFolder)
 	for _, file := range files {
 		var chapterConfig = getChapterConfig(retryFolder + "/" + file.Name())
@@ -36,9 +36,14 @@ func LoadRetry() {
 
 		for _, config := range chapterConfig {
 			wg.Add(1)
-			go download_file(config.Url, config.FullPath, &wg)
+			go download_file(config.Url, config.FullPath, &wg, func() {
+				// os.Remove(retryFolder + "/" + file.Name())
+				// move config to configDownloaded
+				// retryFolder + "/" + file.Name()
+				os.Rename(retryFolder+"/"+file.Name(), retryDownloaded+"/"+file.Name())
+				// os.Rename(configFolder+folder.Name(), configDownloaded+folder.Name())
+			})
 		}
-
 		wg.Wait()
 	}
 }
@@ -65,7 +70,7 @@ func LoadDownload() {
 
 			for _, chapterConfig := range chapterConfigs {
 				wg.Add(1)
-				go download_file(chapterConfig.Url, chapterConfig.FullPath, &wg)
+				go download_file(chapterConfig.Url, chapterConfig.FullPath, &wg, func() {})
 			}
 
 			wg.Wait()
@@ -117,14 +122,11 @@ func getFilesFromFolder(directory_url string) []fs.FileInfo {
 	return fileInfos
 }
 
-func download_file(url string, path string, wg *sync.WaitGroup) {
+func download_file(url string, path string, wg *sync.WaitGroup, cb func()) {
 	defer wg.Done()
 
 	// Specify the URL of the file you want to download
 	fileURL := url
-
-	// Extract the file name from the URL
-	// fileName := filepath.Base(fileURL)
 
 	// Create a new file for writing the downloaded content
 	file, err := os.Create(path)
@@ -153,6 +155,8 @@ func download_file(url string, path string, wg *sync.WaitGroup) {
 	}
 
 	fmt.Println("File downloaded:", path)
+
+	cb()
 }
 
 func logErrorConfig(url string, path string) {
