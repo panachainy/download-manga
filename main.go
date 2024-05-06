@@ -37,11 +37,7 @@ func LoadRetry() {
 		for _, config := range chapterConfig {
 			wg.Add(1)
 			go download_file(config.Url, config.FullPath, &wg, func() {
-				// os.Remove(retryFolder + "/" + file.Name())
-				// move config to configDownloaded
-				// retryFolder + "/" + file.Name()
 				os.Rename(retryFolder+"/"+file.Name(), retryDownloaded+"/"+file.Name())
-				// os.Rename(configFolder+folder.Name(), configDownloaded+folder.Name())
 			}, true)
 		}
 		wg.Wait()
