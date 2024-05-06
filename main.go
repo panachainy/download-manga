@@ -1,6 +1,7 @@
 package main
 
 import (
+	"download-manga/cmd"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,6 +15,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/spf13/cobra"
 )
 
 const retryFolder = "configs/retries"
@@ -25,9 +28,36 @@ type ChapterConfig struct {
 }
 
 func main() {
-	// LoadDownload()
-	LoadRetry()
+	var loadDownload = &cobra.Command{
+		Use:   "load_download",
+		Short: "Download manga from config",
+		Run: func(cmd *cobra.Command, args []string) {
+			// task := args[0]
+			// fmt.Printf("Added task: %s\n", task)
+			LoadDownload()
+		},
+	}
+
+	var loadRetry = &cobra.Command{
+		Use:   "load_retry",
+		Short: "Retry download manga from config",
+		Run: func(cmd *cobra.Command, args []string) {
+			// task := args[0]
+			// fmt.Printf("Added task: %s\n", task)
+			LoadRetry()
+		},
+	}
+
+	cmd.RootCmd.AddCommand(loadDownload)
+	cmd.RootCmd.AddCommand(loadRetry)
+
+	cmd.Execute()
 }
+
+// func main() {
+// 	// LoadDownload()
+// 	LoadRetry()
+// }
 
 func LoadRetry() {
 	files := getFilesFromFolder(retryFolder)
