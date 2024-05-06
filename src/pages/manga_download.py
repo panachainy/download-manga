@@ -39,7 +39,7 @@ if st.button('Merge PDF'):
 
 
 def d():
-    pdf_names = load_pdfs_name()
+    pdf_names = load_pdf_paths()
     print(pdf_names)
     # Load the JSON file
     # with open(fileName, 'r') as f:
@@ -52,7 +52,15 @@ def d():
 @st.cache_resource
 def load_pdf_paths():
     chapter_pdfs_folder = 'chapterPDFs'
-    return natsorted(os.listdir(chapter_pdfs_folder), alg=ns.PATH)
+    dirs = os.listdir(chapter_pdfs_folder)
+
+    pathDirs = []
+
+    for dir in dirs:
+        pathDirs.append(os.path.join(chapter_pdfs_folder, dir))
+        # print(natsorted(os.listdir(chapter_pdfs_folder + '/' + dir), alg=ns.PATH))
+
+    return natsorted(pathDirs, alg=ns.PATH)
 
 
 d()
