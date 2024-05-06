@@ -38,17 +38,24 @@ if st.button('Merge PDF'):
     commands.mergePDFs()
 
 
-def d():
+def pdf_preview_table():
     pdf_names = load_title_dir_paths()
-    pdf_paths = load_pdf_paths(pdf_names[0])
+    
+    if not pdf_names:
+        st.write("No PDFs found")
+        return
+    
+    with st.expander("See pdf previews"):
+    
+        for pdf_name in pdf_names:
+            pdf_paths = load_pdf_paths(pdf_name)
 
-    edited_data = st.data_editor(pdf_paths, num_rows="dynamic")
+            st.dataframe(pd.DataFrame(pdf_paths, columns=['PDF Paths']))
 
     # if st.button('Save Changes'):
     #     with open(pdf_paths, 'w') as f:
     #         json.dump(edited_data, f, indent=2)
 
-    print(pdf_paths)
     # Load the JSON file
     # with open(fileName, 'r') as f:
     #     data = json.load(f)
@@ -63,11 +70,6 @@ chapter_pdfs_folder = 'chapterPDFs'
 @st.cache_resource
 def load_title_dir_paths():
     dirs = os.listdir(chapter_pdfs_folder)
-
-    # pathDirs = []
-
-    # for dir in dirs:
-    #     pathDirs.append(os.path.join(chapter_pdfs_folder, dir))
     pathDirs = update_full_path(dirs, chapter_pdfs_folder)
 
     return natsorted(pathDirs, alg=ns.PATH)
@@ -89,4 +91,4 @@ def load_pdf_paths(title_dir_path: str):
     return update_full_path(file_paths, os.path.join(title_dir_path))
 
 
-d()
+pdf_preview_table()
