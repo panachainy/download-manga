@@ -13,7 +13,7 @@ def retry_table():
         # TODO: make golang is command
         # go run main.go
         # Define the command to run
-        cmd = ["go", "run", "main.go"]
+        cmd = ["go", "run", "main.go", "retry"]
 
         # Run the command
         process = subprocess.Popen(

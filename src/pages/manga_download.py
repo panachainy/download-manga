@@ -1,4 +1,5 @@
 import os
+import subprocess
 from natsort import natsorted, ns
 import streamlit as st
 import pandas as pd
@@ -27,7 +28,28 @@ if st.button('Load config'):
     commands = download.commands()
     commands.load_config()
 
-st.write("on python can't download because we write on golang for easy to make it concurrentcy")
+if st.button('Download PDFs'):
+    # TODO: make golang is command
+    # go run main.go
+    # Define the command to run
+    cmd = ["go", "run", "main.go", "download"]
+
+    # Run the command
+    process = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    # Get the output and errors
+    output, errors = process.communicate()
+
+    # Check if the command was successful
+    if process.returncode == 0:
+        print("Command executed successfully.")
+
+        # output_substring_list = output.split('\n')
+        # print(output_substring_list)
+    else:
+        print("Error executing command:", errors.decode())
+
 
 if st.button('Make PDF'):
     commands = download.commands()
@@ -40,15 +62,16 @@ if st.button('Merge PDF'):
 # TODO: clean pdfs
 # TODO: clean readypdf
 
+
 def pdf_preview_table():
     pdf_names = load_title_dir_paths()
-    
+
     if not pdf_names:
         st.write("No PDFs found")
         return
-    
+
     with st.expander("See pdf previews"):
-    
+
         for pdf_name in pdf_names:
             pdf_paths = load_pdf_paths(pdf_name)
 
