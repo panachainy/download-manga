@@ -10,13 +10,14 @@ rootConfigRetryFolder: str = 'configs/retries'
 
 def retry_table():
     if st.button('Download retry PDFs'):
-        ## TODO: make golang is command
-        ## go run main.go      
+        # TODO: make golang is command
+        # go run main.go
         # Define the command to run
         cmd = ["go", "run", "main.go"]
 
         # Run the command
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Get the output and errors
         output, errors = process.communicate()
@@ -24,9 +25,12 @@ def retry_table():
         # Check if the command was successful
         if process.returncode == 0:
             print("Command executed successfully.")
+
+            # output_substring_list = output.split('\n')
+            # print(output_substring_list)
         else:
             print("Error executing command:", errors.decode())
-    
+
     retry_titles = load_retry_titles()
     st.write("List of retry_titles")
     st.dataframe(retry_titles, width=500)
