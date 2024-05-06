@@ -132,7 +132,9 @@ func download_file(url string, path string, wg *sync.WaitGroup, cb func(), is_re
 	file, err := os.Create(path)
 	if err != nil {
 		fmt.Println("Error creating file:", err)
-		logErrorConfig(url, path)
+		if !is_retry_mode {
+			logErrorConfig(url, path)
+		}
 		return
 	}
 	defer file.Close()
@@ -141,7 +143,9 @@ func download_file(url string, path string, wg *sync.WaitGroup, cb func(), is_re
 	resp, err := http.Get(fileURL)
 	if err != nil {
 		fmt.Println("Error downloading file:", err)
-		logErrorConfig(url, path)
+		if !is_retry_mode {
+			logErrorConfig(url, path)
+		}
 		return
 	}
 	defer resp.Body.Close()
@@ -150,7 +154,9 @@ func download_file(url string, path string, wg *sync.WaitGroup, cb func(), is_re
 	_, err = io.Copy(file, resp.Body)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
-		logErrorConfig(url, path)
+		if !is_retry_mode {
+			logErrorConfig(url, path)
+		}
 		return
 	}
 
