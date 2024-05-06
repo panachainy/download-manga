@@ -39,8 +39,16 @@ if st.button('Merge PDF'):
 
 
 def d():
-    pdf_names = load_pdf_paths()
-    print(pdf_names)
+    pdf_names = load_title_dir_paths()
+    pdf_paths = load_pdf_paths(pdf_names[0])
+
+    edited_data = st.data_editor(pdf_paths, num_rows="dynamic")
+
+    # if st.button('Save Changes'):
+    #     with open(pdf_paths, 'w') as f:
+    #         json.dump(edited_data, f, indent=2)
+
+    print(pdf_paths)
     # Load the JSON file
     # with open(fileName, 'r') as f:
     #     data = json.load(f)
@@ -49,18 +57,36 @@ def d():
     # edited_data = st.data_editor(data, num_rows="dynamic")
 
 
+chapter_pdfs_folder = 'chapterPDFs'
+
+
 @st.cache_resource
-def load_pdf_paths():
-    chapter_pdfs_folder = 'chapterPDFs'
+def load_title_dir_paths():
     dirs = os.listdir(chapter_pdfs_folder)
 
-    pathDirs = []
+    # pathDirs = []
 
-    for dir in dirs:
-        pathDirs.append(os.path.join(chapter_pdfs_folder, dir))
-        # print(natsorted(os.listdir(chapter_pdfs_folder + '/' + dir), alg=ns.PATH))
+    # for dir in dirs:
+    #     pathDirs.append(os.path.join(chapter_pdfs_folder, dir))
+    pathDirs = update_full_path(dirs, chapter_pdfs_folder)
 
     return natsorted(pathDirs, alg=ns.PATH)
+
+
+@st.cache_resource
+def update_full_path(paths, before_path: str):
+    pathDirs = []
+
+    for path in paths:
+        pathDirs.append(os.path.join(before_path, path))
+
+    return pathDirs
+
+
+@st.cache_resource
+def load_pdf_paths(title_dir_path: str):
+    file_paths = os.listdir(title_dir_path)
+    return update_full_path(file_paths, os.path.join(title_dir_path))
 
 
 d()
