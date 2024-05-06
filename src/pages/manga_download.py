@@ -37,6 +37,8 @@ if st.button('Merge PDF'):
     commands = download.commands()
     commands.mergePDFs()
 
+# TODO: clean pdfs
+# TODO: clean readypdf
 
 def pdf_preview_table():
     pdf_names = load_title_dir_paths()
