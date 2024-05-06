@@ -29,7 +29,7 @@ type ChapterConfig struct {
 
 func main() {
 	var loadDownload = &cobra.Command{
-		Use:   "load_download",
+		Use:   "download",
 		Short: "Download manga from config",
 		Run: func(cmd *cobra.Command, args []string) {
 			// task := args[0]
@@ -39,7 +39,7 @@ func main() {
 	}
 
 	var loadRetry = &cobra.Command{
-		Use:   "load_retry",
+		Use:   "retry",
 		Short: "Retry download manga from config",
 		Run: func(cmd *cobra.Command, args []string) {
 			// task := args[0]
