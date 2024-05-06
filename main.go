@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -137,7 +138,18 @@ func download_file(url string, path string, wg *sync.WaitGroup, cb func(), is_re
 
 	// Make the HTTP GET request
 	resp, err := http.Get(fileURL)
+
+	// handle case invalid character "\\"
+	if err != nil && strings.Contains(err.Error(), `invalid character "\\" in host name`) {
+		fmt.Println(`[case] Is invalid character "\\" case`, fileURL)
+
+		newFileURL := regexp.MustCompile(`\\`).ReplaceAllString(fileURL, "")
+		// fmt.Println(newFileURL)
+		resp, err = http.Get(newFileURL)
+	}
+
 	if err != nil {
+
 		fmt.Println("Error downloading file:", err)
 		if !is_retry_mode {
 			logErrorConfig(url, path)
