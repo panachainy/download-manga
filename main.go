@@ -61,7 +61,9 @@ func LoadDownload() {
 
 		var files = getFilesFromFolder(configFolder + folder.Name())
 		for _, file := range files {
-			os.Mkdir(destinationFolder+folder.Name()+"/"+strings.Split(file.Name(), ".")[0], 0755)
+			folderName := destinationFolder + folder.Name() + "/" + strings.Split(file.Name(), ".json")[0]
+
+			os.Mkdir(folderName, 0755)
 			var chapterConfigs = getChapterConfig(configFolder + folder.Name() + "/" + file.Name())
 			var wg sync.WaitGroup
 
