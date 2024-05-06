@@ -42,7 +42,7 @@ func LoadRetry() {
 				// retryFolder + "/" + file.Name()
 				os.Rename(retryFolder+"/"+file.Name(), retryDownloaded+"/"+file.Name())
 				// os.Rename(configFolder+folder.Name(), configDownloaded+folder.Name())
-			})
+			}, true)
 		}
 		wg.Wait()
 	}
@@ -70,7 +70,7 @@ func LoadDownload() {
 
 			for _, chapterConfig := range chapterConfigs {
 				wg.Add(1)
-				go download_file(chapterConfig.Url, chapterConfig.FullPath, &wg, func() {})
+				go download_file(chapterConfig.Url, chapterConfig.FullPath, &wg, func() {}, false)
 			}
 
 			wg.Wait()
@@ -122,7 +122,7 @@ func getFilesFromFolder(directory_url string) []fs.FileInfo {
 	return fileInfos
 }
 
-func download_file(url string, path string, wg *sync.WaitGroup, cb func()) {
+func download_file(url string, path string, wg *sync.WaitGroup, cb func(), is_retry_mode bool) {
 	defer wg.Done()
 
 	// Specify the URL of the file you want to download
