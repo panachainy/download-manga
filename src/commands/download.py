@@ -1,6 +1,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+from utils.deprecated import deprecated
 import utils.model as model
 import utils.scrapping as scrapping
 import json
@@ -53,7 +54,7 @@ class commands:
                 with open(chapterPath, 'a') as f:
                     json.dump(configs, f, indent=4)
 
-    # @deprecated
+    @deprecated
     def download(self, chapter: str = "", skipDownload: bool = False):
         """_summary_
 
@@ -141,18 +142,17 @@ class commands:
         Merge PDF follow folder under ./pdfs
         """
 
-        rootPDFs: str = 'pdfs'
-        files = natsorted(os.listdir(rootPDFs), alg=ns.PATH)
+        rootPDFs: str = 'chapterPDFs'
+        dirs = natsorted(os.listdir(rootPDFs), alg=ns.PATH)
 
-        for dir in files:
-            filePath = os.path.join(rootPDFs, dir)
-            if os.path.isdir(filePath):
-                newPDfDirPath = os.path.join(filePath, 'newPDF')
-                pdfs = natsorted(os.listdir(newPDfDirPath), alg=ns.PATH)
+        for dir in dirs:
+            titleDirPath = os.path.join(rootPDFs, dir)
+            if os.path.isdir(titleDirPath):
+                pdfs = natsorted(os.listdir(titleDirPath), alg=ns.PATH)
 
                 merger = PdfMerger()
                 for pdf in pdfs:
-                    pdfPath = os.path.join(newPDfDirPath, pdf)
+                    pdfPath = os.path.join(titleDirPath, pdf)
                     merger.append(pdfPath)
 
                 def remove_extension(fileName: str):
