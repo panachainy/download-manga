@@ -27,6 +27,30 @@ edit_config()
 if st.button('Load config'):
     commands = download.commands()
     commands.load_config()
+    st.success('Load config done~')
+
+
+def config_table():
+    config_datas = []
+    config_folder = 'configs'
+
+    # configs/Akuma wa Rozario ni Kiss wo suru/ตอนที่ 1.json
+    title_folders = os.listdir(config_folder)
+
+    for title_folder in title_folders:
+        full_title_folder = os.path.join(config_folder, title_folder)
+        files = os.listdir(full_title_folder)
+        count = len(files)
+
+        config_datas.append({
+            'title': title_folder,
+            'count': count
+        })
+
+    st.dataframe(config_datas)
+
+
+config_table()
 
 if st.button('Download PDFs'):
     # TODO: make golang is command
@@ -44,20 +68,24 @@ if st.button('Download PDFs'):
     # Check if the command was successful
     if process.returncode == 0:
         print("Command executed successfully.")
+        st.success('Download PDFs done~')
 
         # output_substring_list = output.split('\n')
         # print(output_substring_list)
     else:
         print("Error executing command:", errors.decode())
+        st.error("Error executing command:", errors.decode())
 
 
 if st.button('Make PDF'):
     commands = download.commands()
     commands.makePDFs()
+    st.success('Make PDF done~')
 
 if st.button('Merge PDF'):
     commands = download.commands()
     commands.mergePDFs()
+    st.success('Merge PDF done~')
 
 # TODO: clean pdfs
 # TODO: clean readypdf
