@@ -66,19 +66,23 @@ if st.button('Download PDFs'):
     process = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    # Get the output and errors
-    output, errors = process.communicate()
+    if process.stdout:
+        for line in process.stdout:
+            print(line.decode().strip())
+
+    if process.stderr:
+        for line in process.stderr:
+            print(line.decode().strip())
+
+    # Wait for the process to finish
+    process.wait()
 
     # Check if the command was successful
     if process.returncode == 0:
         print("Command executed successfully.")
-        st.success('Download PDFs done~')
 
-        # output_substring_list = output.split('\n')
-        # print(output_substring_list)
     else:
-        print("Error executing command:", errors.decode())
-        st.error("Error executing command:", errors.decode())
+        print("Error executing command")
 
 
 if st.button('Make PDF'):
