@@ -108,7 +108,8 @@ class commands:
             titleDirPath = os.path.join(rootPDFs, title_name)
             if os.path.isdir(titleDirPath):
                 chapterDirs = natsorted(
-                    os.listdir(titleDirPath), alg=ns.PATH)
+                    os.listdir(titleDirPath), alg=ns.PATH
+                )
                 for chapterDir in chapterDirs:
                     if chapterDir == 'newPDF':
                         continue
@@ -139,7 +140,7 @@ class commands:
 
     def mergePDFs(self):
         """_summary_
-        Merge PDF follow folder under ./pdfs
+        Merge PDF follow folder under ./pdfs, in every 20 chapters
         """
 
         rootPDFs: str = 'chapterPDFs'
