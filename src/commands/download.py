@@ -152,33 +152,11 @@ class commands:
             if os.path.isdir(titleDirPath):
                 pdfsAll = natsorted(os.listdir(titleDirPath), alg=ns.PATH)
 
-                # pdfsAllWithFullPath = []
-
-                # for p in pdfsAll:
-                #     pdfsAllWithFullPath.append(os.path.join(titleDirPath, p))
-
-                # print(pdfsAllWithFullPath)
                 pdfsSets = self.split_array(pdfsAll, 20)
                 print(pdfsSets)
 
                 for pdfs in pdfsSets:
                     self.mergePdf(pdfs, titleDirPath)  # type: ignore
-
-                # merger = PdfMerger()
-                # for pdf in pdfs:
-                #     pdfPath = os.path.join(titleDirPath, pdf)
-                #     merger.append(pdfPath)
-
-                # def remove_extension(fileName: str):
-                #     return os.path.splitext(fileName)[0]
-
-                # destinationDir = os.path.join('readypdf')
-
-                # dirLib.create_folder(destinationDir)
-                # mergedPDFPath = os.path.join(
-                #     destinationDir,  f"{dir} {remove_extension(pdfs[0])}-{remove_extension(pdfs[-1])}.pdf")
-                # merger.write(mergedPDFPath)
-                # merger.close()
 
     def mergePdf(self, pdfs: List[str], titleDirPath: str):
         merger = PdfMerger()
