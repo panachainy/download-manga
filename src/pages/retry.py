@@ -19,8 +19,17 @@ def retry_table():
         process = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # Get the output and errors
-        output, errors = process.communicate()
+        if process.stdout:
+            for line in process.stdout:
+                print(line.decode().strip())
+        print('444')
+
+        if process.stderr:
+            for line in process.stderr:
+                print(line.decode().strip())
+
+        # Wait for the process to finish
+        process.wait()
 
         # Check if the command was successful
         if process.returncode == 0:
@@ -29,7 +38,7 @@ def retry_table():
             # output_substring_list = output.split('\n')
             # print(output_substring_list)
         else:
-            print("Error executing command:", errors.decode())
+            print("Error executing command")
 
     retry_titles = load_retry_titles()
     st.write("List of retry_titles")
