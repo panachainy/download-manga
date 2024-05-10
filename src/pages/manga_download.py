@@ -31,6 +31,11 @@ if st.button('Load config'):
 
 
 def config_table():
+    st.dataframe(config_datas())
+
+
+@st.cache_resource
+def config_datas():
     config_datas = []
     config_folder = 'configs'
 
@@ -46,8 +51,7 @@ def config_table():
             'title': title_folder,
             'count': count
         })
-
-    st.dataframe(config_datas)
+    return config_datas
 
 
 config_table()
