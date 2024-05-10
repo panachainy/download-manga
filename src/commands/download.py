@@ -1,5 +1,6 @@
 
 from bs4 import BeautifulSoup
+import numpy as np
 import requests
 from utils.deprecated import deprecated
 import utils.model as model
@@ -149,20 +150,52 @@ class commands:
         for dir in dirs:
             titleDirPath = os.path.join(rootPDFs, dir)
             if os.path.isdir(titleDirPath):
-                pdfs = natsorted(os.listdir(titleDirPath), alg=ns.PATH)
+                pdfsAll = natsorted(os.listdir(titleDirPath), alg=ns.PATH)
 
-                merger = PdfMerger()
-                for pdf in pdfs:
-                    pdfPath = os.path.join(titleDirPath, pdf)
-                    merger.append(pdfPath)
+                # pdfsAllWithFullPath = []
 
-                def remove_extension(fileName: str):
-                    return os.path.splitext(fileName)[0]
+                # for p in pdfsAll:
+                #     pdfsAllWithFullPath.append(os.path.join(titleDirPath, p))
 
-                destinationDir = os.path.join('readypdf')
+                # print(pdfsAllWithFullPath)
+                pdfsSets = self.split_array(pdfsAll, 20)
+                print(pdfsSets)
 
-                dirLib.create_folder(destinationDir)
-                mergedPDFPath = os.path.join(
-                    destinationDir,  f"{dir} {remove_extension(pdfs[0])}-{remove_extension(pdfs[-1])}.pdf")
-                merger.write(mergedPDFPath)
-                merger.close()
+                for pdfs in pdfsSets:
+                    self.mergePdf(pdfs, titleDirPath)  # type: ignore
+
+                # merger = PdfMerger()
+                # for pdf in pdfs:
+                #     pdfPath = os.path.join(titleDirPath, pdf)
+                #     merger.append(pdfPath)
+
+                # def remove_extension(fileName: str):
+                #     return os.path.splitext(fileName)[0]
+
+                # destinationDir = os.path.join('readypdf')
+
+                # dirLib.create_folder(destinationDir)
+                # mergedPDFPath = os.path.join(
+                #     destinationDir,  f"{dir} {remove_extension(pdfs[0])}-{remove_extension(pdfs[-1])}.pdf")
+                # merger.write(mergedPDFPath)
+                # merger.close()
+
+    def mergePdf(self, pdfs: List[str], titleDirPath: str):
+        merger = PdfMerger()
+        for pdf in pdfs:
+            p = os.path.join(titleDirPath, pdf)
+            merger.append(p)
+
+        destinationDir = os.path.join('readypdf')
+        mergedPDFPath = os.path.join(
+            destinationDir,  f"{self.remove_extension(pdfs[0])}-{self.remove_extension(pdfs[-1])}.pdf")
+
+        merger.write(mergedPDFPath)
+        merger.close()
+        print(f"Merge PDF to {mergedPDFPath}")
+
+    def remove_extension(self, fileName: str):
+        return os.path.splitext(fileName)[0]
+
+    def split_array(self, arr, size):
+        return np.array_split(arr, (len(arr) + size - 1) // size)
