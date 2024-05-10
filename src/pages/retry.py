@@ -3,6 +3,7 @@ import os
 import streamlit as st
 from natsort import natsorted, ns
 import subprocess
+import pandas as pd
 
 # pdfs/Again My Life/newPDF/ตอนที่ 1.pdf
 rootConfigRetryFolder: str = 'configs/retries'
@@ -22,7 +23,6 @@ def retry_table():
         if process.stdout:
             for line in process.stdout:
                 print(line.decode().strip())
-        print('444')
 
         if process.stderr:
             for line in process.stderr:
@@ -51,12 +51,11 @@ def retry_table():
 
     configRetries = load_json_config_retry_files_data()
 
-    st.write("List of Config Retries")
-    st.dataframe(configRetries)
-
-    # if st.button('Save Changes'):
-    #         with open(fileName, 'w') as f:
-    #             json.dump(edited_data, f, indent=2)
+    if configRetries:
+        st.write("List of Config Retries")
+        dfConfigRetries = pd.DataFrame(configRetries)
+        st.write(dfConfigRetries.describe())
+        st.dataframe(dfConfigRetries)
 
 
 @st.cache_resource
