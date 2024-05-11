@@ -35,11 +35,3 @@ d: dev
 dev:
 	# nodemon --exec python -m streamlit run src/main.py 
 	python -m streamlit run src/main.py 
-
-# clean pdfs
-clean:
-	for dir in ./pdfs/*(/) ./pdfs/*/*(/) ./pdfs/*/*/*(/); do \
-		if [[ -z $$(ls -A $$dir) ]]; then \
-			rmdir $$dir; \
-		fi; \
-	done
