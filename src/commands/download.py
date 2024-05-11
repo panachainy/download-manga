@@ -153,7 +153,6 @@ class commands:
                 pdfsAll = natsorted(os.listdir(titleDirPath), alg=ns.PATH)
 
                 pdfsSets = self.split_array(pdfsAll, 20)
-                print(pdfsSets)
 
                 for pdfs in pdfsSets:
                     self.mergePdf(pdfs, titleDirPath)  # type: ignore

@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 import json
 import commands.download as download
+from utils.streamlit_widget import progress
 
 
 def edit_config():
@@ -56,43 +57,50 @@ def config_datas():
 
 config_table()
 
+
 if st.button('Download PDFs'):
-    # TODO: make golang is command
-    # go run main.go
-    # Define the command to run
-    cmd = ["go", "run", "main.go", "download"]
 
-    # Run the command
-    process = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    def download_pdfs():
+        # TODO: make golang is command
+        # go run main.go
+        # Define the command to run
+        cmd = ["go", "run", "main.go", "download"]
 
-    if process.stdout:
-        for line in process.stdout:
-            print(line.decode().strip())
+        # Run the command
+        process = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    if process.stderr:
-        for line in process.stderr:
-            print(line.decode().strip())
+        if process.stdout:
+            for line in process.stdout:
+                print(line.decode().strip())
 
-    # Wait for the process to finish
-    process.wait()
+        if process.stderr:
+            for line in process.stderr:
+                print(line.decode().strip())
 
-    # Check if the command was successful
-    if process.returncode == 0:
-        print("Command executed successfully.")
+        # Wait for the process to finish
+        process.wait()
 
-    else:
-        print("Error executing command")
+        # Check if the command was successful
+        if process.returncode == 0:
+            print("Command executed successfully.")
+
+        else:
+            print("Error executing command")
+
+    progress(download_pdfs)
 
 
 if st.button('Make PDF'):
     commands = download.commands()
-    commands.makePDFs()
+    
+    progress(commands.makePDFs)
     st.success('Make PDF done~')
 
 if st.button('Merge PDF'):
     commands = download.commands()
-    commands.mergePDFs()
+    
+    progress(commands.mergePDFs)
     st.success('Merge PDF done~')
 
 # TODO: clean pdfs
