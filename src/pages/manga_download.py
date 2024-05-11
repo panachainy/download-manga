@@ -93,18 +93,26 @@ if st.button('Download PDFs'):
 
 if st.button('Make PDF'):
     commands = download.commands()
-    
+
     progress(commands.makePDFs)
     st.success('Make PDF done~')
 
 if st.button('Merge PDF'):
     commands = download.commands()
-    
+
     progress(commands.mergePDFs)
     st.success('Merge PDF done~')
 
-# TODO: clean pdfs
-# TODO: clean readypdf
+
+if st.button('Clean all [not work now]'):
+    # remove all files in pdfs
+    pdfs = 'pdfs'
+    readypdf = 'readypdf'
+    configs = 'configs'
+
+    os.removedirs(pdfs)
+    os.removedirs(readypdf)
+    os.removedirs(configs)
 
 
 def pdf_preview_table():
