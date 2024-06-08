@@ -208,16 +208,16 @@ if st.button('Clean all'):
     # remove all files in pdfs
     pdfs = 'pdfs'
     readypdf = 'readypdf'
-    configs = 'configs'
+    # configs = 'configs'
     chapterPDFs = 'chapterPDFs'
 
     remove_dirs(pdfs)
     remove_dirs(readypdf)
-    remove_dirs(configs)
+    # remove_dirs(configs)
     remove_dirs(chapterPDFs)
     os.makedirs(pdfs, exist_ok=True)
     os.makedirs(readypdf, exist_ok=True)
-    os.makedirs(configs, exist_ok=True)
+    # os.makedirs(configs, exist_ok=True)
     os.makedirs(chapterPDFs, exist_ok=True)
 
 
