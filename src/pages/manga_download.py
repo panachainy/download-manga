@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from natsort import natsorted, ns
 import streamlit as st
@@ -179,6 +180,30 @@ def merged_pdf_datas():
 
 merged_pdf_table()
 
+
+def remove_dirs(directory_path: str):
+    # os.removedirs(directory_path)
+
+    # Check if the directory exists
+    if os.path.exists(directory_path):
+        # Check if the directory is empty
+        if os.listdir(directory_path):
+            # If the directory is not empty, remove all contents
+            for filename in os.listdir(directory_path):
+                file_path = os.path.join(directory_path, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            # After removing all contents, remove the directory
+            shutil.rmtree(directory_path)
+        else:
+            # If the directory is empty, remove it directly
+            shutil.rmtree(directory_path)
+    else:
+        print(f"The directory '{directory_path}' does not exist.")
+
+
 if st.button('Clean all [not work now]'):
     # remove all files in pdfs
     pdfs = 'pdfs'
@@ -186,10 +211,14 @@ if st.button('Clean all [not work now]'):
     configs = 'configs'
     chapterPDFs = 'chapterPDFs'
 
-    os.removedirs(pdfs)
-    os.removedirs(readypdf)
-    os.removedirs(configs)
-    os.removedirs(chapterPDFs)
+    remove_dirs(pdfs)
+    remove_dirs(readypdf)
+    remove_dirs(configs)
+    remove_dirs(chapterPDFs)
+    os.makedirs(pdfs, exist_ok=True)
+    os.makedirs(readypdf, exist_ok=True)
+    os.makedirs(configs, exist_ok=True)
+    os.makedirs(chapterPDFs, exist_ok=True)
 
 
 def pdf_preview_table():
