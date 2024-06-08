@@ -27,7 +27,7 @@ edit_config()
 
 if st.button('Load config'):
     commands = download.commands()
-    commands.load_config()
+    progress(commands.load_config)
     st.success('Load config done~')
 
 
@@ -58,7 +58,7 @@ def config_datas():
 config_table()
 
 
-if st.button('Download PDFs'):
+if st.button('Download images before pdf'):
 
     def download_pdfs():
         # TODO: make golang is command
@@ -89,13 +89,67 @@ if st.button('Download PDFs'):
             print("Error executing command")
 
     progress(download_pdfs)
+    st.success('Download PDF done~')
 
 
-if st.button('Make PDF'):
+def image_table():
+    st.dataframe(image_datas())
+
+
+@st.cache_resource
+def image_datas():
+    image_datas = []
+    image_folder = 'pdfs'
+
+    # pdfs/990k Ex-Life Hunter/ตอนที่ 3/001.jpg
+    title_folders = os.listdir(image_folder)
+
+    for title_folder in title_folders:
+        full_title_folder = os.path.join(image_folder, title_folder)
+        files = os.listdir(full_title_folder)
+        count = len(files)
+
+        image_datas.append({
+            'title': title_folder,
+            'count': count
+        })
+    return image_datas
+
+
+image_table()
+
+if st.button('Make PDF each chapters'):
     commands = download.commands()
 
     progress(commands.makePDFs)
     st.success('Make PDF done~')
+
+
+def chapters_table():
+    st.dataframe(chapters_datas())
+
+
+@st.cache_resource
+def chapters_datas():
+    datas = []
+    folder = 'chapterPDFs'
+
+    # pdfs/990k Ex-Life Hunter/ตอนที่ 3/001.jpg
+    title_folders = os.listdir(folder)
+
+    for title_folder in title_folders:
+        full_title_folder = os.path.join(folder, title_folder)
+        files = os.listdir(full_title_folder)
+        count = len(files)
+
+        datas.append({
+            'title': title_folder,
+            'count': count
+        })
+    return datas
+
+
+chapters_table()
 
 if st.button('Merge PDF'):
     commands = download.commands()
@@ -104,15 +158,38 @@ if st.button('Merge PDF'):
     st.success('Merge PDF done~')
 
 
+def merged_pdf_table():
+    st.dataframe(merged_pdf_datas())
+
+
+@st.cache_resource
+def merged_pdf_datas():
+    datas = []
+    folder = 'readypdf'
+
+    # pdfs/990k Ex-Life Hunter/ตอนที่ 3/001.jpg
+    files = os.listdir(folder)
+
+    for file in files:
+        datas.append({
+            'title': file,
+        })
+    return datas
+
+
+merged_pdf_table()
+
 if st.button('Clean all [not work now]'):
     # remove all files in pdfs
     pdfs = 'pdfs'
     readypdf = 'readypdf'
     configs = 'configs'
+    chapterPDFs = 'chapterPDFs'
 
     os.removedirs(pdfs)
     os.removedirs(readypdf)
     os.removedirs(configs)
+    os.removedirs(chapterPDFs)
 
 
 def pdf_preview_table():
