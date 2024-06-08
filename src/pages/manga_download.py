@@ -204,7 +204,7 @@ def remove_dirs(directory_path: str):
         print(f"The directory '{directory_path}' does not exist.")
 
 
-if st.button('Clean all [not work now]'):
+if st.button('Clean all'):
     # remove all files in pdfs
     pdfs = 'pdfs'
     readypdf = 'readypdf'
